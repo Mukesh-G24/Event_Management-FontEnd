@@ -28,6 +28,8 @@ export class AuthService {
           console.log("Received token:", token);
           this.setToken(token); // Store the token
           this.isAuthenticatedSubject.next(true); // Update authentication status
+          console.log(this.isAuthenticated$);
+          
         }),
         catchError(this.handleError) // Add error handling
       );

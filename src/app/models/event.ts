@@ -7,4 +7,5 @@ export interface Event {
     eventDate:Date;
     eventOrganizerId:number;
     ticketCount:number;
+    ticketPrice:number;
 }

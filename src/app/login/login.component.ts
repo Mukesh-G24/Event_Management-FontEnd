@@ -12,11 +12,8 @@ export class LoginComponent {
 
   username:any="Prem";
   password:any="prem@password";
-
-
+  
   constructor(private auth:AuthService){}
-
-
   login(){
 
     let   credentials={

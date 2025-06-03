@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class EventService {
 
   private apiUrl = "http://localhost:9091/event/fetch-all";

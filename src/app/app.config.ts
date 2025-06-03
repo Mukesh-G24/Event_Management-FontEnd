@@ -4,6 +4,7 @@ import { provideHttpClient, withInterceptorsFromDi  } from '@angular/common/http
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './interceptors/jwt.interceptor'; // Adjust path if needed
 import { routes } from './app.routes';
+import { AuthService } from './services/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,5 +18,6 @@ export const appConfig: ApplicationConfig = {
       useClass: JwtInterceptor,
       multi: true
     },
+    AuthService
   ]
 };

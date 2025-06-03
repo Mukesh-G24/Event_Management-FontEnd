@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { Event } from '../models/event';
 import { EventService } from '../services/event.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-events',
@@ -14,11 +15,12 @@ export class EventsComponent implements OnInit {
 
   events:Event[];
   available:Boolean = false;
-  
-  constructor(private service:EventService){}
+  selectedEvent:Event;
+  constructor(private service:EventService, public authService:AuthService, private route:Router){
+  }
 
   ngOnInit(): void {
-    // this.getAllEvents();
+    this.getAllEvents();
   }
 
   getAllEvents(){
@@ -30,6 +32,14 @@ export class EventsComponent implements OnInit {
       },
       error:(error)=>console.log(error)
     })
+  }
+
+  selectEvent(event:Event){
+    this.selectedEvent = event;
+  }
+
+  navigateToLogin(){
+    this.route.navigate(["/login"]);
   }
 
 }
