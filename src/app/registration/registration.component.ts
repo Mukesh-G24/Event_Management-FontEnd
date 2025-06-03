@@ -54,7 +54,6 @@ export class RegistrationComponent implements OnInit {
 
       console.log(userAuth);
       
-      let isAuthRegistered = false;
       this.registration.authRegisteration(userAuth).subscribe({
         next : (data) => {
                 console.log(data);

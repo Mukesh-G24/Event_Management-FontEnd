@@ -15,7 +15,7 @@
     ];
 
     constructor(private authService: AuthService) {
-    console.log('JwtInterceptor constructor invoked!');
+    // console.log('JwtInterceptor constructor invoked!');
       
     }
 
@@ -25,7 +25,7 @@
         return next.handle(request);
       }
       const token = this.authService.getToken();
-      console.log("token : "+token);
+      // console.log("token : "+token);
 
       if (token) {
         // Clone the request and add the Authorization header

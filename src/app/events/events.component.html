@@ -1,40 +1,42 @@
-<!-- <div class="container my-3">
-    <div class="row">
-        <div class="col-2">
-            <button class=" btn btn-success dropdown-toggle" data-bs-toggle="dropdown">Filter</button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" routerLink="events">By Location</a></li>
-                <li><a class="dropdown-item" routerLink="events">By Date</a></li>
-                <li><a class="dropdown-item" routerLink="events">By Category</a></li>
-            </ul>
-        </div> -->
-        <!-- <div class="col-2" (click)="getAllEvents()"><button class="btn btn-primary">Get</button> </div> -->
-   <!-- </div>
-    <div class="row d-flex justify-content-around">
-            <div *ngFor="let event of events" class="col-12 col-sm-6 col-md-4 mb-3 col-lg-3">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-6 col-sm-12">
-                            <img class="img-fluid rounded h-100 w-100" src="https://picsum.photos/300/200" alt="">
-                        </div>
-                        <div class="col-6 col-sm-12">
-                            <div class="card-body">
-                                    <h3>{{event.eventCategory}}</h3>
-                                    <p>{{event.eventName}}</p>
-                                    <p>{{event.eventLocation}}</p>
-                                    <p>{{event.eventDate}}</p>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventInfo">More info</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </div>
-</div> -->
+
+ <!-- <div class="col-2" (click)="getAllEvents()"><button class="btn btn-primary">Get</button> </div> -->
+
 
 <div class="container my-5">
+    <h1>{{authService.userRole$  | async}}</h1>
     <h1 class="mb-4 text-center">Upcoming Events</h1>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+
+
+    <div *ngIf="!(authService.isAuthenticated$ | async)" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col" *ngFor="let event of events">
+            <div class="card h-100 shadow-sm border-0 event-card-custom">
+                <div class="event-card-image-wrapper">
+                    <img src="https://picsum.photos/seed/{{event.id + 123}}/400/250" class="card-img-top event-img-fit" alt="Global Tech Summit">
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary mb-2">{{event.eventName | uppercase}}</h5>
+                    <p class="card-text text-muted mb-1">
+                        <i class="bi bi-calendar-event me-2"></i> {{event.eventDate | date:'fullDate'}}
+                    </p>
+                    <p class="card-text text-muted mb-3">
+                        <i class="bi bi-geo-alt-fill me-2"></i> {{event.eventLocation | uppercase}}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                        <span class="badge bg-info text-dark">{{event.eventCategory}}</span>
+                        <span class="text-secondary small">Tickets Left:{{event.ticketCount}}</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0 pt-0">
+                    <button *ngIf="!(authService.isAuthenticated$ | async)" class="btn btn-danger w-100" (click)="navigateToLogin()"><i class="fa-solid fa-lock fa-flip me-2"></i>Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- User -->
+
+    <div *ngIf="(authService.userRole$ | async) === 'User' " class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <div class="col" *ngFor="let event of events">
             <div class="card h-100 shadow-sm border-0 event-card-custom">
                 <div class="event-card-image-wrapper">
@@ -61,90 +63,56 @@
         </div>
     </div>
 
-    <!-- <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+<!-- Organizer -->
+
+    <div *ngIf="(authService.userRole$ | async) === 'Organizer' " class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <!-- <div class="row">
+            <button></button>
+        </div> -->
         <div class="col" *ngFor="let event of events">
-            <div class="card h-100 border-0 shadow-lg event-card-hover-scale">
-                <div class="event-card-img-container">
-                    <img src="https://picsum.photos/seed/{{event.id + 123}}/400/250" class="card-img-top event-img-fit" alt="{{event.eventName}}">
-                    <div class="event-card-category-overlay">
-                        <span class="badge bg-primary rounded-pill">{{event.eventCategory}}</span>
+            <div class="card h-100 shadow-sm border-0 event-card-custom">
+                <div class="event-card-image-wrapper">
+                    <img src="https://picsum.photos/seed/{{event.id + 123}}/400/250" class="card-img-top event-img-fit" alt="Global Tech Summit">
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary mb-2">{{event.eventName | uppercase}}</h5>
+                    <p class="card-text text-muted mb-1">
+                        <i class="bi bi-calendar-event me-2"></i> {{event.eventDate | date:'fullDate'}}
+                    </p>
+                    <p class="card-text text-muted mb-3">
+                        <i class="bi bi-geo-alt-fill me-2"></i> {{event.eventLocation | uppercase}}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                        <span class="badge bg-info text-dark">{{event.eventCategory}}</span>
+                        <span class="text-secondary small">Tickets Left:{{event.ticketCount}}</span>
                     </div>
                 </div>
-                <div class="card-body d-flex flex-column pb-0">
-                    <h5 class="card-title text-dark fw-bold mb-2 text-truncate">{{event.eventName | uppercase}}</h5>
-                    <p class="card-text text-muted small mb-1">
-                        <i class="bi bi-calendar-event me-2"></i> {{event.eventDate | date:'mediumDate'}}
-                    </p>
-                    <p class="card-text text-muted small mb-3">
-                        <i class="bi bi-geo-alt-fill me-2"></i> {{event.eventLocation | titlecase}}
-                    </p>
+                <div class="card-footer bg-white border-0 pt-0">
+                    <button *ngIf="!(authService.isAuthenticated$ | async)" class="btn btn-danger w-100" (click)="navigateToLogin()"><i class="fa-solid fa-lock fa-flip me-2"></i>Login</button>
+                    <div class="row">
+                        <div class="col-6">
+                            <a *ngIf="(authService.isAuthenticated$ | async)"class="btn btn-warning w-100" data-bs-toggle="modal" data-bs-target="#editEventModal" (click)="selectEvent(event)"><i class="fa-solid fa-pen-to-square me-2"></i>Update</a>
     
-                    <div class="d-flex justify-content-between align-items-end mt-auto pt-3 border-top">
-                        <div class="ticket-price-info">
-                            <span class="text-success fw-bolder fs-5">
-                                <i class="bi bi-currency-rupee"></i> {{event.ticketPrice | currency:'INR':'symbol'}}
-                            </span>
                         </div>
-                        <div class="ticket-count-info text-end">
-                            <span class="text-secondary small">
-                                <i class="bi bi-ticket-fill me-1"></i> {{event.ticketCount}} Tickets Left
-                            </span>
+                        <div class="col-6">
+                            <a *ngIf="(authService.isAuthenticated$ | async)"class="btn btn-danger w-100"  (click)="deleteEvent(event.id)"><i class="fa-solid fa-trash me-2"></i>Delete</a>
+    
                         </div>
                     </div>
                 </div>
-                <div class="card-footer bg-white border-0 pt-3 pb-3">
-                    <a href="#" class="btn btn-outline-primary btn-sm w-100 fw-bold">Explore Event</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
-</div>
-
-
-
-
-
-<!-- <div class="modal fade" id="eventInfo">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Task</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="w-100" style="object-fit: cover; background-size: cover;">
-                    <img class="img-fluid" src="https://picsum.photos/200/300" alt="">
-                </div>
-                <form action="">
-                    <div class="mb-3">
-                        <label class="form-label" for="taskName">Task Name</label>
-                        <input class="form-control" type="text" id="taskName" placeholder="Enter task name">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="taskDesc">Task Description</label>
-                        <textarea class="form-control" id="taskDesc" placeholder="Enter task description"></textarea>
-                    </div>
-                    <div>
-                        <label class="form-label" for="">Task Status</label>
-                        <select class="form-select" name="" id="">
-                            <option value="" selected>New</option>
-                            <option value="">In Progress</option>
-                            <option value="">Completed</option>
-                            <option value="">Cancelled</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary">Save Task</button>
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</div> -->
 
 
+</div>
 
+
+<!-- Modal -->
+
+
+<!-- User Modal -->
 
 <div class="modal fade" id="eventInfo" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -192,3 +160,46 @@
         </div>
     </div>
 </div>
+
+
+
+<!-- Organizer Modal -->
+
+
+
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true" *ngIf="selectedEvent">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editEventModalLabel">Update</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="mb-3">
+                    <label for="eventName" class="form-label">Event Name </label>
+                    <input type="text" class="form-control" id="eventName" name="eventName" [(ngModel)]="selectedEvent.eventName">
+                  </div>
+                  <div class="mb-3">
+                    <label for="eventLocation" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="eventLocation"  name="eventLocation" [(ngModel)]="selectedEvent.eventLocation">
+                  </div>
+                  <div class="mb-3">
+                    <label for="eventDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="eventDate"  name="eventDate" [(ngModel)]="selectedEvent.eventDate">
+                  </div>
+                  <div class="mb-3">
+                    <label for="eventPrice" class="form-label">Price</label>
+                    <input class="form-control" id="eventPrice" rows="3"  name="eventPrice" [(ngModel)]="selectedEvent.ticketPrice">
+                  </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="updateEvent(selectedEvent)" >Save changes</button>
+              </div>
+        </div>
+    </div>
+</div>
+
+

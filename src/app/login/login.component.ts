@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,16 +11,17 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent {
 
-  username:any="Prem";
-  password:any="prem@password";
+  username:any="";
+  password:any="";
   
-  constructor(private auth:AuthService){}
+  constructor(private auth:AuthService, private route:Router){}
   login(){
 
     let   credentials={
       "username":this.username,
       "password":this.password
     } 
-    console.log(this.auth.login(credentials).subscribe(data=>console.log("Data "+data)));
+    this.auth.login(credentials).subscribe(data=>console.log("Data "+data));
+    this.route.navigate([""]);
   }
 }
