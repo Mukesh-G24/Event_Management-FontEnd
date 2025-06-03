@@ -12,7 +12,7 @@ export class EventService {
 
   private fetchAllUrl = "http://localhost:9091/event/fetch-all";
   private updateEvnetUrl = "http://localhost:9091/event/update/";
-  private deleteEvnetUrl = "http://localhost:9091/event/delete/";
+  private deleteEventUrl = "http://localhost:9091/event/delete/";
 
   constructor(private http:HttpClient) { }
 
@@ -25,6 +25,6 @@ export class EventService {
   }
 
   deleteEvent(id:number):Observable<HttpResponse<any>>{
-    return this.http.delete(this.deleteEvnetUrl+id,{observe:'response'});
+    return this.http.delete(this.deleteEventUrl+id,{observe:'response'});
   }
 }
