@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, map, catchError, throwError } from 'rxjs';
+import { AuthUser } from '../models/auth-user';
 
 
 @Injectable({
@@ -12,6 +13,7 @@ export class AuthService {
 
   private apiGatewayUrl = 'http://localhost:9091';
   private tokenKey = 'jwt_token';
+  private authUser : AuthUser;
 
   
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
@@ -22,7 +24,7 @@ export class AuthService {
 
 
 
-  private role:Observable<string>;
+  private role:Observable<AuthUser>;
 
   login(credentials: any): Observable<string> { 
     return this.http.post(`${this.apiGatewayUrl}/auth/authenticate`, credentials, { responseType: 'text' })
@@ -32,13 +34,15 @@ export class AuthService {
           this.setToken(token); 
           this.isAuthenticatedSubject.next(true); 
           console.log(this.isAuthenticated$);
-          this.role = this.http.get("http://localhost:9091/auth/getroles/"+credentials.username,{responseType:'text'});
+          this.role = this.http.get<AuthUser>("http://localhost:9091/auth/getroles/"+credentials.username);
           this.role.subscribe({
-           next: (data:string)=>{
+           next: (data:AuthUser)=>{
               console.log("user role:");
               console.log(data)
-              this.setRole(data);
-              this.userRoleSubject.next(data);
+              this.setRole(data.roles);
+              this.setUserName(data.name);
+              this.setUserId(data.id);
+              this.userRoleSubject.next(data.roles);
               console.log(this.userRole$);
             }
           })
@@ -79,6 +83,24 @@ export class AuthService {
 
   public getRole():string{
     return localStorage.getItem("role");
+  }
+
+  private setUserName(username:string){
+    localStorage.setItem('username',username);
+  }
+
+  public getUserName():string{
+    return localStorage.getItem('username');
+  }
+
+  private setUserId(id:number){
+    localStorage.setItem("id",id.toString());
+  }
+
+  public getUserId():number{
+    console.log(Number(localStorage.getItem("id")));
+    
+    return Number(localStorage.getItem("id"));
   }
 
   private handleError(error: HttpErrorResponse) {

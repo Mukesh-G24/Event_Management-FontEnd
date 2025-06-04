@@ -11,6 +11,7 @@ import { Event } from '../models/event';
 export class EventService {
 
   private fetchAllUrl = "http://localhost:9091/event/fetch-all";
+  private addEventUrl = "http://localhost:9091/event/save";
   private updateEvnetUrl = "http://localhost:9091/event/update/";
   private deleteEventUrl = "http://localhost:9091/event/delete/";
 
@@ -18,6 +19,10 @@ export class EventService {
 
   getAllEvents():Observable<HttpResponse<any>>{
     return this.http.get(this.fetchAllUrl,{observe:'response'});
+  }
+
+  addEvent(event:Event):Observable<HttpResponse<any>>{
+    return this.http.post(this.addEventUrl,event,{observe:'response'});
   }
 
   updateEvent(event:Event):Observable<HttpResponse<any>>{
