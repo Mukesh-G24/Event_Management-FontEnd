@@ -6,6 +6,7 @@
   import { AuthService } from '../services/auth.service';
   import { FormsModule } from '@angular/forms';
 
+
   @Component({
     selector: 'app-events',
     imports: [CommonModule,FormsModule],
@@ -18,6 +19,7 @@
     // available:Boolean = false;
     selectedEvent:Event;
     eventData:any;
+    quantityToBook: number = 1;
 
     constructor(private service:EventService, public authService:AuthService, private route:Router){
 
@@ -37,6 +39,20 @@
       if(this.authService.isAuthenticated$){
         this.authService.emitUserRole();
       }
+    }
+
+    bookEvent(event:Event){
+      console.log("Booking details");
+      const bookingData = {
+        eventId:event.id,
+        userId:this.authService.getUserId(),
+        noOfTickets:this.quantityToBook
+      }
+      console.log(event);
+      this.service.bookEvent(bookingData).subscribe({
+        next:(res)=>console.log(res),
+        error:(error)=>console.log(error)
+      })
     }
 
     addEvent(event){
@@ -90,7 +106,33 @@
 
     selectEvent(event:Event){
       this.selectedEvent = {...event};
+      this.quantityToBook = 1;
+
+      if (this.selectedEvent.ticketCount < this.quantityToBook) {
+          this.quantityToBook = this.selectedEvent.ticketCount;
+      }
+      if (this.quantityToBook > 10) {
+          this.quantityToBook = 10;
+      }
+      if (this.selectedEvent.ticketCount === 0) { 
+          this.quantityToBook = 0;
+      }
     }
+
+    onQuantityChange(): void {
+      
+      console.log("Selected quantity:", this.quantityToBook);  
+       const maxAllowed = Math.min(10, this.selectedEvent?.ticketCount || 1);
+      if (this.quantityToBook > maxAllowed) {
+          this.quantityToBook = maxAllowed;
+      }
+      if (this.quantityToBook < 1 && (this.selectedEvent?.ticketCount || 0) > 0) {
+          this.quantityToBook = 1; 
+      }
+      if (this.selectedEvent && this.selectedEvent.ticketCount === 0) {
+          this.quantityToBook = 0; 
+      }
+  }
 
     navigateToLogin(){
       this.route.navigate(["/login"]);

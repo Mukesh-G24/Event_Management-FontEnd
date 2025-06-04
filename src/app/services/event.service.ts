@@ -14,12 +14,18 @@ export class EventService {
   private addEventUrl = "http://localhost:9091/event/save";
   private updateEvnetUrl = "http://localhost:9091/event/update/";
   private deleteEventUrl = "http://localhost:9091/event/delete/";
+  private bookEventUrl = "http://localhost:9091/ticket/book";
 
   constructor(private http:HttpClient) { }
 
   getAllEvents():Observable<HttpResponse<any>>{
     return this.http.get(this.fetchAllUrl,{observe:'response'});
   }
+
+  bookEvent(eventData:any):Observable<HttpResponse<any>>{
+    return this.http.post(this.bookEventUrl,eventData,{observe:'response'});
+  }
+
 
   addEvent(event:Event):Observable<HttpResponse<any>>{
     return this.http.post(this.addEventUrl,event,{observe:'response'});

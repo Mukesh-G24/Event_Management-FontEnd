@@ -125,39 +125,82 @@
                 <h5 class="modal-title" id="eventDetailsModalLabel">{{ selectedEvent?.eventName | uppercase }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4"> 
                 <div class="text-center mb-4">
-                    <img class="img-fluid rounded shadow-sm" src="https://picsum.photos/seed/{{ selectedEvent?.id + 123 }}/600/350" alt="{{ selectedEvent?.eventName }}" style="max-height: 350px; object-fit: cover; width: 100%;">
+                    <img class="img-fluid rounded shadow-sm border border-2 border-primary" src="https://picsum.photos/seed/{{ selectedEvent?.id + 123 }}/600/350" alt="{{ selectedEvent?.eventName }}" style="max-height: 350px; object-fit: cover; width: 100%;">
                 </div>
 
-                <div class="row g-3 mb-4">
-                    <div class="col-md-6">
-                        <p class="mb-1"><strong><i class="bi bi-calendar-event me-2 text-primary"></i>Date:</strong></p>
-                        <p class="lead">{{ selectedEvent?.eventDate | date:'fullDate' }}</p>
+                <div class="row g-4 mb-4"> <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-calendar-event me-2 text-primary"></i>Event Date:</h6>
+                                <p class="card-text fs-5 fw-bold text-dark">{{ selectedEvent?.eventDate | date:'fullDate' }}</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <p class="mb-1"><strong><i class="bi bi-geo-alt-fill me-2 text-primary"></i>Location:</strong></p>
-                        <p class="lead">{{ selectedEvent?.eventLocation | uppercase }}</p>
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-geo-alt-fill me-2 text-primary"></i>Location:</h6>
+                                <p class="card-text fs-5 fw-bold text-dark">{{ selectedEvent?.eventLocation | uppercase }}</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <p class="mb-1"><strong><i class="bi bi-tag-fill me-2 text-primary"></i>Category:</strong></p>
-                        <p class="lead">{{ selectedEvent?.eventCategory }}</p>
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-tag-fill me-2 text-primary"></i>Category:</h6>
+                                <p class="card-text fs-5 fw-bold text-dark">{{ selectedEvent?.eventCategory }}</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <p class="mb-1"><strong><i class="bi bi-ticket-fill me-2 text-primary"></i>Tickets Remaining:</strong></p>
-                        <p class="lead">{{ selectedEvent?.ticketCount }}</p>
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-ticket-fill me-2 text-primary"></i>Tickets Remaining:</h6>
+                                <p class="card-text fs-5 fw-bold text-dark">{{ selectedEvent?.ticketCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-ticket-fill me-2 text-primary"></i>Ticket Price:</h6>
+                                <p class="card-text fs-5 fw-bold text-dark">{{ selectedEvent?.ticketPrice | currency:'INR':'symbol' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="bi bi-ticket-fill me-2 text-primary"></i>Select Quantity:</h6>
+                                <div class="d-flex align-items-center">
+                                    <input type="range" class="form-range flex-grow-1 me-3" id="ticketQuantity" 
+                                    min="1" max="10" step="1"
+                                    [(ngModel)]="quantityToBook"
+                                    (input)="onQuantityChange()"
+                                    >
+                                    <span class="fs-4 fw-bold text-dark">{{ quantityToBook }}</span>
+                                </div>
+                                <small class="text-muted d-block mt-1">Available: {{ selectedEvent?.ticketCount }} tickets</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-center">
+                            <div class="card shadow-sm w-50">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2"><i class="bi bi-ticket-fill me-2 text-primary"></i>To Pay:</h6>
+                                    <p class="display-6 fw-bolder text-dark">{{ (selectedEvent?.ticketPrice || 0) * (quantityToBook || 0) | currency:'INR':'symbol' }}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <div class="alert alert-info text-center py-3" role="alert">
-                    <h4 class="alert-heading mb-1"><i class="bi bi-currency-rupee me-2"></i>Ticket Price:</h4>
-                    <p class="display-5 fw-bold text-success">{{ selectedEvent?.ticketPrice | currency:'INR':'symbol' }}</p>
-                </div>
-
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success fw-bold">
+                <button type="button" class="btn btn-success fw-bold" (click)="bookEvent(selectedEvent)">
                     <i class="bi bi-cash-coin me-2"></i>Book Now
                 </button>
             </div>
