@@ -1,12 +1,12 @@
 <nav class="navbar navbar-dark navbar-expand-lg" style="background-color:rgb(46, 46, 46)">
     <div class="container">
-        <a class="navbar-brand" href="#">🎉 Event Management</a>
+        <a class="navbar-brand" href="#">🎉 THE EVENT HUB</a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarItems"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarItems">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item" *ngIf="!(authService.isAuthenticated$ | async)"><a class="nav-link active" routerLink="login">Login</a></li>
                 <li class="nav-item" *ngIf="!(authService.isAuthenticated$ | async)"><a class="nav-link" routerLink="registration">Registration</a></li>
-                <li class="nav-item" *ngIf="(authService.isAuthenticated$ | async)"><button class="btn btn-link nav-link active" (click)="onLogout()">Logout</button></li>
+                <li class="nav-item" *ngIf="(authService.isAuthenticated$ | async)"><a class="btn btn-link nav-link active" (click)="onLogout()">Logout</a></li>
                 <li class="nav-item" ><a class="nav-link" routerLink="events">Events</a></li>
                 <li class="nav-item" *ngIf="(authService.isAuthenticated$ | async) && (authService.userRole$ | async) === 'User'"><a class="nav-link" routerLink="myBookings">My Bookings</a></li>
             </ul>

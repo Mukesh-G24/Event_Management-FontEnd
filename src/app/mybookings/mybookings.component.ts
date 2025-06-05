@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BookingsService } from '../services/bookings.service';
+import { Ticket } from '../models/ticket';
+import { EventService } from '../services/event.service';
+import { Event } from '../models/event';
+import { CancelTicket } from '../models/cancel-ticket';
 
 @Component({
   selector: 'app-mybookings',
@@ -10,16 +14,73 @@ import { BookingsService } from '../services/bookings.service';
 })
 export class MybookingsComponent implements OnInit {
   
-  constructor(private service:BookingsService){}
+  userTickets:Ticket[]=[];
+  completedEvents:Event[]=[];
+  upcomingEvents:CancelTicket[]=[];
+  // upcomingEvents={
+  //   id:0,
+  //   eventName:'',
+  //   eventCategory:'',
+  //   eventLocation:'',
+  //   eventDate:null,
+  //   eventOrganizerId:0,
+  //   ticketCount:0,
+  //   ticketPrice:0,
+  //   ticketId:0
+  // }
+  
+  constructor(private bookingService:BookingsService,private eventService:EventService){}
 
   ngOnInit(): void {
     this.getMyTickets();
   }
 
   getMyTickets(){
-    this.service.getMyTickets().subscribe({
-      next:(res)=>console.log(res),
+    this.bookingService.getMyTickets().subscribe({
+      next:(res)=>{
+        this.userTickets=res.body;
+        for(let ticket of this.userTickets){
+          this.eventService.getEventById(ticket.eventId).subscribe({
+            next:(res)=>{
+
+              if(ticket.ticketStatus === 'BOOKED'){
+                let curEventDate = res.body.eventDate;
+                if(typeof curEventDate === 'string'){
+                  curEventDate = new Date(curEventDate);
+                }
+                let today = new Date();
+                if(curEventDate >= today){
+                  let a={...res.body,ticketId:ticket.ticketId};
+                  console.log("Upcoming events : ",a);
+                  this.upcomingEvents.push(a);              
+                }
+                else{
+                  let a={...res.body,ticketId:ticket.ticketId};
+                  console.log("completed evetns: ",a);
+                  this.completedEvents.push(a);
+                }
+              } 
+            }
+          })
+        }        
+      },
       error:(error)=>console.log(error)   
     })
   }
+
+  cancelTicket(ticketId:number){
+    this.bookingService.cancelTicket(ticketId).subscribe({
+      next:(res)=>{
+        console.log(res);
+        
+        console.log("cancelled");
+        
+        this.getMyTickets()
+      },
+      error:(error)=>console.log(error)
+    })
+
+  }
+  
+  
 }

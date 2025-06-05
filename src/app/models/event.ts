@@ -1,3 +1,5 @@
+import { linkedSignal } from "@angular/core";
+
 export interface Event {
 
     id:number;

@@ -4,6 +4,6 @@ export interface Ticket {
     eventId:number;
     userId:number;
     ticketBookingDate:Date;
-    
-
+    ticketStatus:string;
+    noOfTickets:number
 }

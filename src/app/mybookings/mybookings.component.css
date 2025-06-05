@@ -1,0 +1,14 @@
+.center-container {
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Horizontally center content */
+    align-items: center; /* Vertically center content */
+    min-height: 100vh; /* Make the container take at least the full viewport height */
+    width: 100%; /* Make the container take full width */
+  }
+  
+  .no-events-message {
+    /* You can add styling specific to your message here */
+    font-size: 24px;
+    color: #555;
+    font-weight: bold;
+  }

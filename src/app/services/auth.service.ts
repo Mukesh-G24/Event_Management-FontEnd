@@ -53,8 +53,11 @@ export class AuthService {
   }
 
   logout(): void {
-    this.removeToken();
     this.isAuthenticatedSubject.next(false);
+    this.removeToken();
+    this.removeUserId();
+    this.removeRole();
+    this.removeUserName();
   }
 
   public emitUserRole(){
@@ -85,6 +88,10 @@ export class AuthService {
     return localStorage.getItem("role");
   }
 
+  private removeRole(){
+    localStorage.removeItem("role");
+  }
+
   private setUserName(username:string){
     localStorage.setItem('username',username);
   }
@@ -93,14 +100,20 @@ export class AuthService {
     return localStorage.getItem('username');
   }
 
+  private removeUserName(){
+    localStorage.removeItem("username");
+  }
+
   private setUserId(id:number){
     localStorage.setItem("id",id.toString());
   }
 
-  public getUserId():number{
-    console.log(Number(localStorage.getItem("id")));
-    
+  public getUserId():number{    
     return Number(localStorage.getItem("id"));
+  }
+
+  private removeUserId(){
+    localStorage.removeItem("id");
   }
 
   private handleError(error: HttpErrorResponse) {
