@@ -34,7 +34,7 @@
             Authorization: `Bearer ${token}`
           }  
         });
-        console.log(`Interceptor: Token added to request for URL: ${request.url}`); 
+        // console.log(`Interceptor: Token added to request for URL: ${request.url}`); 
       }
 
       return next.handle(request);

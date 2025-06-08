@@ -1,0 +1,56 @@
+<div class="body my-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow rounded-3 feedback-card">
+            <div class="card-body p-4">
+              <div class="row g-4 align-items-center"> <div class="col-md-6"> <img [src]="'https://picsum.photos/seed/' + (event.id || 123) + '/400/250'" class="card-img-top rounded-3 feedback-image" alt="Event Image">
+                </div>
+                <div class="col-md-6 text-md-start text-center"> <h1 class="mb-3"><b>{{event.eventName | uppercase}}</b></h1>
+                  <div class="d-flex flex-column align-items-start mt-3 gap-2"> <h4><b>Category &nbsp; &nbsp; : </b><span class="text-muted">{{event.eventCategory | uppercase}}</span></h4>
+                    <h4><b>Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : </b> <span class="text-muted">{{event.eventDate | date:'longDate'}}</span></h4>
+                    <h4><b>Location &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </b><span class="text-muted">{{event.eventLocation | uppercase}}</span></h4>
+                    <h4><b>Avg. Rating  : </b><span class="text-muted">{{avgRating | number:'1.1-1'}}<i class="fa-solid fa-star ms-1 text-warning"></i></span></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="my-0">
+  
+            <div class="card-body p-4 pt-0"> <h5 class="card-title text-center mb-4 mt-2">Your Feedback Matters!</h5>
+              <form>
+                <div class="mb-3">
+                  <label for="feedbackMessage" class="form-label d-block text-start">
+                    Comments or Suggestions 
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="feedbackMessage"
+                    rows="5"
+                    placeholder="Tell us about your experience, what you liked, or how we can improve..."
+                    required
+                    [(ngModel)]="comments" name="feedbackMessage"
+                    name="modle"
+                  ></textarea>
+                </div>
+  
+                <div class="mb-4"> <label class="form-label d-block text-center mb-2">Rate Us </label>
+                  <div class="star-rating d-flex align-items-center justify-content-center">
+                    <ng-container *ngFor="let i of star" >
+                      <i class="fa-solid fa-star" (click)="changeRating(i)" [ngClass]="{'active':i<=rating}"></i>
+                    </ng-container>
+                    <span *ngIf="rating > 0" class="ms-2 badge bg-info rating-text-badge">
+                      <span class="ratingText">{{ rating }} / {{ star.length }}</span>
+                    </span>
+                  </div>
+                </div>
+  
+                <div class="d-grid"> <button type="submit" class="btn btn-primary btn-md" (click)="submitFeedback()">Submit Feedback</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

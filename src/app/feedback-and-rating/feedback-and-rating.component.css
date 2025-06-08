@@ -1,0 +1,97 @@
+span{
+    color: rgb(91, 91, 91);
+}
+  
+.active{
+    color:orange;
+}
+
+i{
+    color: rgb(182, 181, 181);
+ 
+}
+i:hover{
+    
+   
+    font-size: 20px;
+    /* color:red; */
+}
+.ratingText{
+    color: white;
+}
+
+
+
+.feedback-card {
+    border: none; 
+    border-radius: 15px; 
+    overflow: hidden; 
+  }
+  
+  /* Image styles */
+  .feedback-image {
+    max-width: 100%; 
+    height: auto;
+    object-fit: cover; 
+    aspect-ratio: 16/9; 
+    border-radius: 8px; /
+  }
+  
+ 
+  .star-rating i {
+    color: #dee2e6; 
+    cursor: pointer;
+    font-size: 2.2rem; 
+    transition: color 0.2s ease-in-out, transform 0.1s ease-in-out; 
+    margin: 0 3px; 
+  }
+  
+  .star-rating i.active {
+    color: #ffc107; 
+  }
+  
+  .star-rating i:hover {
+    color: #ffc107;
+    transform: scale(1.1); 
+  }
+  
+/* */
+  
+
+  
+  /* Style for the rating number badge */
+  .rating-text-badge {
+    font-size: 1rem; /* Adjust font size */
+    padding: 0.4em 0.7em;
+    min-width: 45px; /* Ensure consistent width */
+    text-align: center;
+  }
+  
+  /* General form element adjustments */
+  .form-label {
+    font-weight: 600; /* Make labels slightly bolder */
+  }
+  
+  .form-text {
+    font-size: 0.85em; /* Smaller helper text */
+  }
+  
+  /* Headings for event details */
+  .card-body h4 {
+    font-size: 1.1rem; /* Slightly smaller h4 in details section */
+    margin-bottom: 0; /* Remove default margin to control spacing with gap */
+  }
+  
+  .card-body h4 b {
+    color: #343a40; /* Darker color for labels */
+  }
+  
+  .card-body h4 span {
+    font-weight: normal; /* Normal font weight for the actual data */
+  }
+  
+  /* Adjust top level container padding/margin if needed */
+  .body {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }

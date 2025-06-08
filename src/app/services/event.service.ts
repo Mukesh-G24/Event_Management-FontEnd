@@ -16,6 +16,7 @@ export class EventService {
   private deleteEventUrl = "http://localhost:9091/event/delete/";
   private bookEventUrl = "http://localhost:9091/ticket/book";
   private getEventByIdUrl = "http://localhost:9091/event/fetch-by-id/";
+  private getEventByOrganizerIdUrl = "http://localhost:9091/event/fetch-by-organizerId/";
 
   constructor(private http:HttpClient) { }
 
@@ -42,5 +43,9 @@ export class EventService {
 
   getEventById(id:number):Observable<HttpResponse<any>>{
     return this.http.get(this.getEventByIdUrl+id,{observe:'response'});
+  }
+
+  getEventByOrganizerId(id:number):Observable<HttpResponse<any>>{
+    return this.http.get(this.getEventByOrganizerIdUrl+id,{observe:'response'});
   }
 }

@@ -5,6 +5,7 @@ import { Ticket } from '../models/ticket';
 import { EventService } from '../services/event.service';
 import { Event } from '../models/event';
 import { CancelTicket } from '../models/cancel-ticket';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mybookings',
@@ -15,21 +16,10 @@ import { CancelTicket } from '../models/cancel-ticket';
 export class MybookingsComponent implements OnInit {
   
   userTickets:Ticket[]=[];
-  completedEvents:Event[]=[];
+  completedEvents:CancelTicket[]=[];
   upcomingEvents:CancelTicket[]=[];
-  // upcomingEvents={
-  //   id:0,
-  //   eventName:'',
-  //   eventCategory:'',
-  //   eventLocation:'',
-  //   eventDate:null,
-  //   eventOrganizerId:0,
-  //   ticketCount:0,
-  //   ticketPrice:0,
-  //   ticketId:0
-  // }
   
-  constructor(private bookingService:BookingsService,private eventService:EventService){}
+  constructor(private bookingService:BookingsService,private eventService:EventService,private route:Router){}
 
   ngOnInit(): void {
     this.getMyTickets();
@@ -45,18 +35,19 @@ export class MybookingsComponent implements OnInit {
 
               if(ticket.ticketStatus === 'BOOKED'){
                 let curEventDate = res.body.eventDate;
+                
                 if(typeof curEventDate === 'string'){
                   curEventDate = new Date(curEventDate);
                 }
-                let today = new Date();
+                let today = new Date();         
                 if(curEventDate >= today){
                   let a={...res.body,ticketId:ticket.ticketId};
-                  console.log("Upcoming events : ",a);
+                  // console.log("Upcoming events : ",a);
                   this.upcomingEvents.push(a);              
                 }
                 else{
                   let a={...res.body,ticketId:ticket.ticketId};
-                  console.log("completed evetns: ",a);
+                  // console.log("completed evetns: ",a);
                   this.completedEvents.push(a);
                 }
               } 
@@ -79,8 +70,9 @@ export class MybookingsComponent implements OnInit {
       },
       error:(error)=>console.log(error)
     })
-
   }
   
-  
+  navigateTo(eventId:number){
+    this.route.navigate(["/submit-feedback",eventId]);
+  }
 }

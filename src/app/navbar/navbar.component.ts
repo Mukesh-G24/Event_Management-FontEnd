@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   constructor(private service:AuthService, private route:Router){    
     this.authService = service;
     console.log(this.authService);
+    this.authService.emitUserRole();
   }
 
   ngOnInit(): void {
@@ -24,5 +25,10 @@ export class NavbarComponent implements OnInit {
   onLogout(){
     this.service.logout();
     this.route.navigate(["/login"]);
+    this.authService.emitUserRole();
+  }
+
+  navigateTo(){
+    this.route.navigate(["/user-profile",this.service.getUserId()]);
   }
 }

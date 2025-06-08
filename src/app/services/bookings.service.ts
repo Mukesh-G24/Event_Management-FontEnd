@@ -10,6 +10,7 @@ export class BookingsService {
 
   private getTicketByUserUrl = "http://localhost:9091/ticket/fetch-by-user-id/";
   private cancelTicketUrl = "http://localhost:9091/ticket/cancel/";
+  
 
   constructor(private http:HttpClient, private authService:AuthService) { }
 

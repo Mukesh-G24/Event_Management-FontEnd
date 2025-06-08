@@ -16,7 +16,7 @@
 </div> -->
 
 
-<div class="login-container d-flex justify-content-center align-items-center vh-100">
+<!-- <div class="login-container d-flex justify-content-center align-items-center vh-100">
   <div class="login-box bg-white p-5 rounded shadow-lg col-md-5 col-lg-4">
       <h2 class="text-center  mb-5 welcome">Welcome Back!</h2>
       <form action="">
@@ -33,4 +33,70 @@
           </div>
       </form>
   </div>
+</div> -->
+
+
+<!-- 
+<div class="login-container d-flex justify-content-center align-items-center vh-100">
+    <div class="login-box bg-white p-5 rounded shadow-lg col-md-5 col-lg-4">
+        <h2 class="text-center mb-5 welcome">Welcome Back!</h2>
+        <form #loginForm="ngForm" (ngSubmit)="login()">
+            <div class="form-floating mb-4">
+                <input type="email" class="form-control" id="username" placeholder="Enter your username"
+                    [(ngModel)]="username" name="username" required email #usernameField="ngModel"
+                    [class.is-invalid]="usernameField.invalid && usernameField.touched">
+                <label for="username">Username</label>
+                <div *ngIf="usernameField.invalid && usernameField.touched" class="invalid-feedback">
+                    <div *ngIf="usernameField.errors?.['required']">Username is required.</div>
+                    <div *ngIf="usernameField.errors?.['email']">Please enter a valid email.</div>
+                </div>
+            </div>
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control" id="password" placeholder="Enter your password"
+                    [(ngModel)]="password" name="password" required minlength="6" #passwordField="ngModel"
+                    [class.is-invalid]="passwordField.invalid && passwordField.touched">
+                <label for="password">Password</label>
+                <div *ngIf="passwordField.invalid && passwordField.touched" class="invalid-feedback">
+                    <div *ngIf="passwordField.errors?.['required']">Password is required.</div>
+                    <div *ngIf="passwordField.errors?.['minlength']">Password must be at least 6 characters.</div>
+                </div>
+            </div>
+            <div class="container d-flex justify-content-center">
+                <button class="btn btn-primary btn-lg mt-3 w-50" type="submit" [disabled]="loginForm.invalid">Login</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+
+
+<div class="login-container d-flex justify-content-center align-items-center vh-100">
+    <div class="login-box bg-white p-5 rounded shadow-lg col-md-5 col-lg-4">
+        <h2 class="text-center mb-5 welcome">Welcome Back!</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <div class="form-floating mb-4">
+                <input type="email" class="form-control" id="username" placeholder="Enter your username"
+                    formControlName="username"
+                    [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+                <label for="username">Username</label>
+                <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="invalid-feedback">
+                    <div *ngIf="loginForm.get('username')?.errors?.['required']">Username is required.</div>
+                    <div *ngIf="loginForm.get('username')?.errors?.['email']">Please enter a valid email.</div>
+                </div>
+            </div>
+            <div class="form-floating mb-4">
+                <input type="password" class="form-control" id="password" placeholder="Enter your password"
+                    formControlName="password"
+                    [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                <label for="password">Password</label>
+                <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+                    <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+                    <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</div>
+                </div>
+            </div>
+            <div class="container d-flex justify-content-center">
+                <button class="btn btn-primary btn-lg mt-3 w-50" type="submit" [disabled]="loginForm.invalid">Login</button>
+            </div>
+        </form>
+    </div>
 </div>

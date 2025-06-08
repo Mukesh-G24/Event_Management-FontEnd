@@ -15,11 +15,11 @@
   })
   export class EventsComponent implements OnInit {
 
-    events:Event[];
-    // available:Boolean = false;
+    allEvents:Event[];
     selectedEvent:Event;
     eventData:any;
     quantityToBook: number = 1;
+    isBooking:boolean=false;
 
     constructor(private service:EventService, public authService:AuthService, private route:Router){
 
@@ -34,14 +34,35 @@
       };
     }
 
+
     ngOnInit(): void {
-      this.getAllEvents();
+    
+      this.authService.userRole$.subscribe({
+        next:(role)=>{
+          if(role == 'User'){
+            this.getAllEvents();
+          }
+          else if(role == 'Organizer'){
+            this.getEventsByOrganizerId();
+          }
+        }
+      })
+
+      this.authService.isAuthenticated$.subscribe({
+        next:(isLoggedIn)=>{
+          if(!isLoggedIn){
+            this.getAllEvents();
+          }
+        }
+      })      
+  
       if(this.authService.isAuthenticated$){
         this.authService.emitUserRole();
       }
     }
 
     bookEvent(event:Event){
+      this.isBooking = true;
       console.log("Booking details");
       const bookingData = {
         eventId:event.id,
@@ -50,7 +71,10 @@
       }
       console.log(event);
       this.service.bookEvent(bookingData).subscribe({
-        next:(res)=>console.log(res),
+        next:(res)=>{
+          console.log(res);
+          this.isBooking=true;
+        },
         error:(error)=>console.log(error)
       })
     }
@@ -68,10 +92,17 @@
       this.service.getAllEvents().subscribe({
         next:(data)=>{
           console.log(data.body);
-          this.events = data.body;
-          // this.available=true;
+          this.allEvents = data.body;
         },
         error:(error)=>console.log(error)
+      })
+    }
+
+    getEventsByOrganizerId(){
+      this.service.getEventByOrganizerId(this.authService.getUserId()).subscribe({
+        next:(res)=>{
+          this.allEvents = res.body;
+        }
       })
     }
 
@@ -80,7 +111,16 @@
       this.service.updateEvent(event).subscribe({
         next:(res)=>{
           console.log(res);
-          this.getAllEvents();
+          this.authService.userRole$.subscribe({
+            next:(role)=>{
+              if(role == 'User'){
+                this.getAllEvents();
+              }
+              else if(role == 'Organizer'){
+                this.getEventsByOrganizerId();
+              }
+            }
+          })
         },
         error:(error)=>console.log(error)
       });

@@ -1,8 +1,6 @@
 import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../models/user';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +18,7 @@ export class RegistrationService {
     });
   }
 
-  userRegistration(body:User):Observable<HttpResponse<any>>{
+  userRegistration(body):Observable<HttpResponse<any>>{
     return this.http.post(this.url,body,{
       observe:'response'
     });

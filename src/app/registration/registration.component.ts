@@ -37,7 +37,7 @@ export class RegistrationComponent implements OnInit {
   onSubmit(): void {
     if (this.registrationForm.valid) {
       console.log('Form Submitted!', this.registrationForm.value);
-      const user:User={
+      const user={
         userName : this.registrationForm.value.username,
         userEmail : this.registrationForm.value.email,
         userPassword : this.registrationForm.value.password,

@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded-3 feedback-card mt-5">
+                <div class="card-body p-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-6"> <img
+                                [src]="'https://picsum.photos/seed/' + (event.id || 123) + '/400/250'"
+                                class="card-img-top rounded-3 feedback-image" alt="Event Image">
+                        </div>
+                        <div class="col-md-6 text-md-start text-center">
+                            <h3 class="mb-3"><b>{{event.eventName | uppercase}}</b></h3>
+                            <div class="d-flex flex-column align-items-start mt-3 gap-2">
+                                <h5><b>Category : </b><span class="text-muted">{{event.eventCategory | uppercase}}</span>
+                                </h5>
+                                <h5><b>Date : </b> <span class="text-muted">{{event.eventDate | date:'longDate'}}</span>
+                                </h5>
+                                <h5><b>Location : </b><span class="text-muted">{{event.eventLocation | uppercase}}</span>
+                                </h5>
+                                <h5><b>Avg. Rating : </b><span class="text-muted">{{avgRating | number:'1.1-1'}}<i class="fa-solid fa-star ms-1 text-warning"></i></span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-3">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded-3 feedback-card ">
+                <div class="card-header">
+                    <h2>User Feedbacks</h2>
+                </div>
+                <div class="card-body p-4">
+
+                    <div *ngIf="eventFeedbacks.length == 0">
+                        <h2>No Feedbacks for this event...</h2>
+                    </div>
+
+                    <div *ngIf="eventFeedbacks.length>0">
+                        <div *ngFor="let feedback of eventFeedbacks" class="col mb-3">
+                            <div class="card shadow rounded-4 feedback-card ">
+                                <div class="card-body p-2">
+                                    <div class="row g-4 align-items-center">
+                                        <div class="col-md-3 d-flex justify-content-center justify-content-center">
+                                            <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden;">
+                                                <img [src]="'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtRs_rWILOMx5-v3aXwJu7LWUhnPceiKvvDg&s'"
+                                                class="w-100 h-100 object-fit-cover" alt="User Profile Photo">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9 text-md-start text-center">
+                                            <h5 class="mb-3"><b>{{feedback.userName | uppercase}}</b></h5>
+                                            <div class="d-flex flex-column align-items-start mt-3 gap-2">
+                                                <div class="ratings">
+                                                    <i *ngFor="let star of getStarArrys(feedback.rating)" class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                    <i *ngFor="let star of getStarArrys(5 - feedback.rating)" class="fa-solid fa-star" style="color: #c2c2c2;"></i>
+                                                </div>
+                                                <div class="comments">
+                                                    <p>{{feedback.comments}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>

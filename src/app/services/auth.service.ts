@@ -14,7 +14,6 @@ export class AuthService {
   private apiGatewayUrl = 'http://localhost:9091';
   private tokenKey = 'jwt_token';
   private authUser : AuthUser;
-
   
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
