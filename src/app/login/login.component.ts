@@ -32,28 +32,28 @@
 // }
 
 
-import { Component, OnInit } from '@angular/core'; // Import OnInit
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule and form classes
+import { Component, OnInit } from '@angular/core'; 
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms'; 
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr'; 
+
 
 @Component({
   selector: 'app-login',
-  // Make sure to add ReactiveFormsModule to imports for standalone components
-  // If not a standalone component, ensure ReactiveFormsModule is imported in your AppModule
-  standalone: true, // Assuming this is a standalone component
-  imports: [ReactiveFormsModule], // Import ReactiveFormsModule here
+  standalone: true, 
+  imports: [ReactiveFormsModule,CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit { // Implement OnInit
+export class LoginComponent implements OnInit { 
 
-  loginForm!: FormGroup; // Declare a FormGroup to hold our form controls
-
-  constructor(private auth: AuthService, private route: Router) { }
+  loginForm!: FormGroup; 
+  errorMessge:string;
+  constructor(private auth: AuthService, private route: Router, private toastr:ToastrService) { }
 
   ngOnInit(): void {
-    // Initialize the FormGroup in ngOnInit
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.minLength(3)]),
       password: new FormControl('', [Validators.required, Validators.minLength(3)])
@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit { // Implement OnInit
   }
 
   login() {
-    if (this.loginForm.valid) { // Check if the form is valid before submitting
+    if (this.loginForm.valid) { 
       const credentials = {
         username: this.loginForm.value.username,
         password: this.loginForm.value.password
@@ -70,15 +70,17 @@ export class LoginComponent implements OnInit { // Implement OnInit
       this.auth.login(credentials).subscribe(
         data => {
           console.log("Login successful: ", data);
-          this.route.navigate([""]); // Navigate on successful login
+          this.toastr.success('Logged in successfully!', 'Success');
+          console.log("toastr executed...");
+          
+          this.route.navigate([""]); 
         },
         error => {
           console.error("Login failed: ", error);
-          // Handle login error (e.g., display an error message to the user)
+          this.errorMessge = "invalid username or passowrd";
         }
       );
     } else {
-      // If the form is invalid, mark all fields as touched to display validation messages
       this.loginForm.markAllAsTouched();
       console.log("Form is invalid. Please check the fields.");
     }

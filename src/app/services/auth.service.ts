@@ -115,6 +115,10 @@ export class AuthService {
     localStorage.removeItem("id");
   }
 
+  public isLoggedIn():boolean{
+    return this.hasToken();
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {

@@ -71,9 +71,12 @@
 
 
 <div class="login-container d-flex justify-content-center align-items-center vh-100">
-    <div class="login-box bg-white p-5 rounded shadow-lg col-md-5 col-lg-4">
-        <h2 class="text-center mb-5 welcome">Welcome Back!</h2>
+    <div class="login-box  p-5 rounded shadow-lg col-md-5 col-lg-4">
+        <h2 class="text-center text-white mb-5 welcome">Welcome Back!</h2>
         <form [formGroup]="loginForm" (ngSubmit)="login()">
+            <div *ngIf="errorMessge" class="alert alert-danger text-center mb-3" role="alert">
+                {{ errorMessge }}
+            </div>
             <div class="form-floating mb-4">
                 <input type="email" class="form-control" id="username" placeholder="Enter your username"
                     formControlName="username"

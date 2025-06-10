@@ -8,16 +8,17 @@ import { FeedbackAndRatingComponent } from './feedback-and-rating/feedback-and-r
 import { OrganizerFeedbackComponent } from './organizer-feedback/organizer-feedback.component';
 import { EventFeedbacksComponent } from './event-feedbacks/event-feedbacks.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
     {path:"events",component:EventsComponent},
     {path:"login",component:LoginComponent},
     {path:"registration",component:RegistrationComponent},
-    {path:"myBookings",component:MybookingsComponent},
-    {path:"event-feedbacks/:eventId",component:EventFeedbacksComponent},
-    {path:"feedbacks",component:OrganizerFeedbackComponent},
-    { path: "submit-feedback/:eventId", component: FeedbackAndRatingComponent },
-    {path:"feedback",component:FeedbackAndRatingComponent},
-    {path:"user-profile/:userId",component:UserProfileComponent}
+    {path:"myBookings",component:MybookingsComponent,canActivate:[AuthGuard]},
+    {path:"event-feedbacks/:eventId",component:EventFeedbacksComponent,canActivate:[AuthGuard]},
+    {path:"feedbacks",component:OrganizerFeedbackComponent,canActivate:[AuthGuard]},
+    {path: "submit-feedback/:eventId", component: FeedbackAndRatingComponent,canActivate:[AuthGuard]},
+    {path:"feedback",component:FeedbackAndRatingComponent,canActivate:[AuthGuard]},
+    {path:"user-profile/:userId",component:UserProfileComponent,canActivate:[AuthGuard]}
 ];

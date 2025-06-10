@@ -14,7 +14,6 @@ i:hover{
     
    
     font-size: 20px;
-    /* color:red; */
 }
 .ratingText{
     color: white;
@@ -28,7 +27,6 @@ i:hover{
     overflow: hidden; 
   }
   
-  /* Image styles */
   .feedback-image {
     max-width: 100%; 
     height: auto;
@@ -54,44 +52,50 @@ i:hover{
     color: #ffc107;
     transform: scale(1.1); 
   }
-  
-/* */
-  
-
-  
-  /* Style for the rating number badge */
+    
   .rating-text-badge {
-    font-size: 1rem; /* Adjust font size */
+    font-size: 1rem; 
     padding: 0.4em 0.7em;
-    min-width: 45px; /* Ensure consistent width */
+    min-width: 45px;
     text-align: center;
   }
   
-  /* General form element adjustments */
+  
   .form-label {
-    font-weight: 600; /* Make labels slightly bolder */
+    font-weight: 600; 
   }
   
   .form-text {
-    font-size: 0.85em; /* Smaller helper text */
+    font-size: 0.85em; 
   }
   
-  /* Headings for event details */
+ 
   .card-body h4 {
-    font-size: 1.1rem; /* Slightly smaller h4 in details section */
-    margin-bottom: 0; /* Remove default margin to control spacing with gap */
+    font-size: 1.1rem; 
+    margin-bottom: 0; 
   }
   
   .card-body h4 b {
-    color: #343a40; /* Darker color for labels */
+    color: #343a40;
   }
   
   .card-body h4 span {
-    font-weight: normal; /* Normal font weight for the actual data */
+    font-weight: normal; 
   }
   
-  /* Adjust top level container padding/margin if needed */
   .body {
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
+
+  .card{
+    transition: all 0.2s ease-in;
+  }
+.card:hover{
+  transform: translateY(-5px);
+  transition: all 0.2s ease-in-out;
+}
+
+body{
+  /* background-image: url('../Asset/back-view-crowd-fans-watching-live-performance-music-concert-night-copy-space.jpg'); */
+}
