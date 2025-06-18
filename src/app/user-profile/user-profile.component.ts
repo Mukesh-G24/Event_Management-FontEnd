@@ -41,7 +41,10 @@ export class UserProfileComponent {
 
   updateProfile(user:any){
     this.userService.updateUser(this.userId,user).subscribe({
-      next:(res)=>console.log(res),
+      next:(res)=>{
+        alert("Profile updated successfully.");
+        console.log("user updated");
+      },
       error:(error)=>console.log(error) 
     })
   }

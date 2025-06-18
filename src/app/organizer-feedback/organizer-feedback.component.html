@@ -1,8 +1,8 @@
 <div class="container my-5">
     <div *ngIf="(authService.userRole$ | async) === 'Organizer' " >
 
-        <div *ngIf="!allEvents">
-            <div  class="no-events-message">You Don't have any Events</div>
+        <div *ngIf="allEvents.length==0">
+            <h1 class="events-heading">You Don't have any Events.....</h1>
         </div>
         
         <div *ngIf="allEvents" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">

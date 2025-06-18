@@ -65,10 +65,17 @@ export class MybookingsComponent implements OnInit {
         console.log(res);
         
         console.log("cancelled");
+        alert("Ticket cancelled successfully");
         
         this.getMyTickets()
       },
-      error:(error)=>console.log(error)
+      error:(error)=>{
+        console.log("error message ",error.status);
+        if(error.status == 200){
+          
+          alert("Ticket Cancelled Successfully");
+        }
+      }
     })
   }
   

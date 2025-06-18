@@ -1,10 +1,10 @@
 <div class="body">
-    <div class="container m-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
+    <div class="container p-5">
+        <div class="row justify-content-center registratoin-container">
+            <div class="col-md-7">
                 <div class="card shadow text-center">
                     <div class="card-header text-center">
-                        <h5>Please fill this form for the Registration</h5>
+                        <h5 class="text-white">Please fill this form for the Registration</h5>
                     </div>
                     <div class="card-body">
                         <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
@@ -14,7 +14,7 @@
                                     placeholder="Enter your username">
                                 <div *ngIf="registrationForm.controls['username'].invalid && registrationForm.controls['username'].touched"
                                     class="alert alert-danger alert-custom mt-2 mx-auto">
-                                    Username Length Must Be 5-10
+                                    Username Length Must Be 3-10
                                 </div>
                             </div>
                             <div class="mb-3 mx-auto">
@@ -51,12 +51,13 @@
                                     placeholder="Phone number">
                                 <div *ngIf="registrationForm.controls['contactNumber'].invalid && registrationForm.controls['contactNumber'].touched"
                                     class="alert alert-danger alert-custom mt-2 mx-auto">
-                                    Contact number is required
+                                    Invalid Contact Number
                                 </div>
                             </div>
                             <div class="mb-3 mx-auto">
-                                <label class="form-label"><b>Are you a ?</b></label>
+                                <label class="form-label text-white"><b>Are you a ?</b></label>
                                 <select class="form-select input-small mx-auto" formControlName="role">
+                                    <Option selected>--Seletct--</Option>
                                     <option>Organizer</option>
                                     <option>User</option>
                                 </select>

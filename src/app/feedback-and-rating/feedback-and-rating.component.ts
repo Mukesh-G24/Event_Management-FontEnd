@@ -56,7 +56,13 @@ export class FeedbackAndRatingComponent {
     }
 
     this.feedbackService.submitFeedback(feedBack).subscribe({
-      next:(res)=>console.log(res),
+      next:(res)=>{
+        console.log(res);
+        if(res.status == 200){
+          alert("Feedback submitted successfully");
+        }
+        
+      },
       error:(error)=>console.log(error)
     })
   }

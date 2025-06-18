@@ -1,9 +1,13 @@
-.container{
-   background-image: url('../Asset/back-view-crowd-fans-watching-live-performance-music-concert-night-copy-space.jpg');
-   background: no-repeat center/cover;
+.container-fluid{
+    background: no-repeat center/cover;
+   /* background-image: url('../Asset/ev-bg2.avif'); */
+   /* background-color: rgb(87, 30, 110); */
+   /* background: linear-gradient(30deg, #3a1c71, #ff0066); */
+
+
 
 }
-.upcoming-events-heading-modern {
+.upcoming-events-heading-modern,.events-heading {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 3.2rem; 
     font-weight: 600; 

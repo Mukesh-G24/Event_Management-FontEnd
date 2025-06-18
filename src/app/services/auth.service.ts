@@ -25,7 +25,7 @@ export class AuthService {
 
   private role:Observable<AuthUser>;
 
-  login(credentials: any): Observable<string> { 
+  login(credentials: any):Observable<string> { 
     return this.http.post(`${this.apiGatewayUrl}/auth/authenticate`, credentials, { responseType: 'text' })
       .pipe(
         tap((token: string) => { 

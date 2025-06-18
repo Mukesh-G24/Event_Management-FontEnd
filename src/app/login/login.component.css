@@ -1,15 +1,17 @@
 
 body {
 /* background: linear-gradient(to right, #ece9e6, #ffffff);  */
-    background-image: url('../Asset/back-view-crowd-fans-watching-live-performance-music-concert-night-copy-space.jpg');
+    /* background-image: url('../Asset/back-view-crowd-fans-watching-live-performance-music-concert-night-copy-space.jpg'); */
 }
 .welcome{
-color: #ff0066;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
 }       
 
 .login-container {
-background-image: url('../Asset/back-view-crowd-fans-watching-live-performance-music-concert-night-copy-space.jpg');
 background: no-repeat center/cover;
+background-image: url('../Asset/back-view-crowd-fans-watching-live-performance-music-concert-night-copy-space.jpg');
+
 background-size: cover;
 }
 

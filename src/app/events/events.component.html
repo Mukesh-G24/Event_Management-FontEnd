@@ -4,13 +4,43 @@
 
 <!-- <div class="container my-5"> -->
 <div class="container-fluid  p-5" >
+   
     
-    <h1 class="mb-4 text-center upcoming-events-heading-modern">Upcoming Events</h1>
+    <h1 *ngIf="allEvents.length>0" class="mb-4 text-center upcoming-events-heading-modern">Upcoming Events</h1>
+    <div *ngIf="allEvents.length>0 && (authService.userRole$ | async) != 'Organizer'" class="row my-3">
+        <div class="col-12 mb-4">
+            <div class="card shadow-md border-1 filter-container">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filter Events</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="categoryFilter" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="categoryFilter" [(ngModel)]="selectedCategory"
+                                placeholder="e.g., Tech, Music, Sports" (input)="applyFilters()">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="dateFilter" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="dateFilter" [(ngModel)]="selectedDate" (change)="applyFilters()">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="locationFilter" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="locationFilter" [(ngModel)]="selectedLocation"
+                                placeholder="e.g., New York, London" (input)="applyFilters()">
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <button class="btn btn-outline-secondary me-2" (click)="clearFilters()">Clear Filters</button>
+                        <!-- <button class="btn btn-primary" (click)="applyFilters()">Apply Filters</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div *ngIf="!(authService.isAuthenticated$ | async)" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         
-        <div class="col" *ngFor="let event of allEvents">
-            <div class="card h-100 shadow-sm border-0 event-card-custom">
+        <div class="col" *ngFor="let event of filteredEvents">
+            <div class="card h-100 shadow-md     border-0 event-card-custom">
                 <div class="event-card-image-wrapper">
                     <img src="https://picsum.photos/seed/{{event.id + 123}}/400/250" class="card-img-top event-img-fit" alt="Global Tech Summit">
                 </div>
@@ -66,35 +96,7 @@
     </div> -->
 
 
-    <div class="row my-3">
-        <div class="col-12 mb-4">
-            <div class="card shadow-md border-1 filter-container">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Filter Events</h5>
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="categoryFilter" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="categoryFilter" [(ngModel)]="selectedCategory"
-                                placeholder="e.g., Tech, Music, Sports" (input)="applyFilters()">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="dateFilter" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="dateFilter" [(ngModel)]="selectedDate" (change)="applyFilters()">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="locationFilter" class="form-label">Location</label>
-                            <input type="text" class="form-control" id="locationFilter" [(ngModel)]="selectedLocation"
-                                placeholder="e.g., New York, London" (input)="applyFilters()">
-                        </div>
-                    </div>
-                    <div class="mt-3 d-flex justify-content-end">
-                        <button class="btn btn-outline-secondary me-2" (click)="clearFilters()">Clear Filters</button>
-                        <!-- <button class="btn btn-primary" (click)="applyFilters()">Apply Filters</button> -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
 
     <div *ngIf="(authService.userRole$ | async) === 'User' " class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -133,8 +135,8 @@
 
     <div *ngIf="(authService.userRole$ | async) === 'Organizer' " >
 
-        <div *ngIf="!allEvents">
-            <div  class="no-events-message">Create your First Event</div>
+        <div *ngIf="allEvents.length == 0">
+            <div  class="m-5 events-heading">Create your First Event</div>
         </div>
         <div class="row mb-4"> 
             <div class="col-12 text-center"> 
@@ -279,6 +281,7 @@
 
 <!-- Organizer Modal -->
 
+<!-- update modal -->
 
 
 <div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="eventDetailsModalLabel" aria-hidden="true" *ngIf="selectedEvent">
@@ -304,7 +307,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="eventDate" class="form-label">Date</label>
-                    <input type="date" class="form-control" id="eventDate"  name="eventDate" [(ngModel)]="selectedEvent.eventDate">
+                    <input type="date" [min]="minDate" class="form-control" id="eventDate"  name="eventDate" [(ngModel)]="selectedEvent.eventDate">
                   </div>
                   <div class="mb-3">
                     <label for="eventPrice" class="form-label">Price</label>
@@ -314,7 +317,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="updateEvent(selectedEvent)" >Save changes</button>
+                <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="updateEvent(selectedEvent)" >Save Changes</button>
               </div>
         </div>
     </div>
@@ -325,8 +328,6 @@
 
 <!-- Adding Evnet Modal -->
 
-  
-  <!-- Modal -->
   <div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -350,7 +351,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="eventDate" class="form-label">Date</label>
-                    <input type="date" class="form-control" id="eventDate"  name="eventDate" [(ngModel)]="eventData.eventDate" required>
+                    <input type="date" [min]="minDate" class="form-control" id="eventDate"  name="eventDate" [(ngModel)]="eventData.eventDate" required>
                   </div>
                   <div class="mb-3">
                     <label for="eventPrice" class="form-label">Price</label>
@@ -364,7 +365,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="addEvent(eventData)" >Save changes</button>
+                <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" (click)="addEvent(eventData)" >Add Event</button>
               </div>
         </div>
     </div>

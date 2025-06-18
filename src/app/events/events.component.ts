@@ -185,7 +185,6 @@
   import { CommonModule } from '@angular/common';
   import { AuthService } from '../services/auth.service';
   import { FormsModule } from '@angular/forms';
-import { BookingDetails } from '../models/booking-details';
 
   declare var Razorpay: any; 
 
@@ -196,7 +195,8 @@ import { BookingDetails } from '../models/booking-details';
     styleUrl: './events.component.css',
   })
   export class EventsComponent implements OnInit {
-    allEvents: Event[];
+    allEvents: Event[]=[];
+    upcommingEvents: Event[]=[];
     selectedEvent: Event;
     eventData: any;
     quantityToBook: number = 1;
@@ -204,7 +204,8 @@ import { BookingDetails } from '../models/booking-details';
     selectedCategory: string;
     selectedDate: null;
     selectedLocation: string;
-    filteredEvents:Event[];
+    filteredEvents:Event[]=[];
+    minDate:string;
 
     constructor(
       private service: EventService,
@@ -220,16 +221,22 @@ import { BookingDetails } from '../models/booking-details';
         ticketCount: 0,
         ticketPrice: 0,
       };
+      
     }
 
     ngOnInit(): void {
       this.loadRazorpayScript();
+      this.setDate();
 
       this.authService.userRole$.subscribe({
         next: (role) => {
           if (role == 'User') {
+            // console.log("calling from inside user");
+            
             this.getAllEvents();
           } else if (role == 'Organizer') {
+            // console.log("calling from inside organizer");
+            
             this.getEventsByOrganizerId();
           }
         },
@@ -246,6 +253,14 @@ import { BookingDetails } from '../models/booking-details';
       if (this.authService.isAuthenticated$) {
         this.authService.emitUserRole();
       }
+    }
+
+    setDate(){
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      this.minDate = `${year}-${month}-${day}`;
     }
 
 
@@ -326,11 +341,30 @@ import { BookingDetails } from '../models/booking-details';
     getAllEvents() {
       this.service.getAllEvents().subscribe({
         next: (data) => {
-          console.log(data.body);
+          this.upcommingEvents = [];
+          // console.log(data.body);
           this.allEvents = data.body;
-          this.filteredEvents = this.allEvents;
+          // this.filteredEvents = this.allEvents;
+          for(let e of this.allEvents){
+            let curEventDate = e.eventDate;
+            if(typeof curEventDate === 'string'){
+              curEventDate = new Date(curEventDate)
+            }
+            let today = new Date();
+            if(curEventDate >= today){
+              // console.log("upcoming event : ",e.eventName);
+              
+              this.upcommingEvents.push(e);
+            }
+          }
+          this.filteredEvents = this.upcommingEvents;
+          // console.log("filtered events from inside get all events",this.filteredEvents);
+          
         },
-        error: (error) => console.log(error),
+        error: (error) => {
+          console.log("event not found...",error);
+          
+        },
       });
     }
 
@@ -339,6 +373,14 @@ import { BookingDetails } from '../models/booking-details';
         next: (res) => {
           this.allEvents = res.body;
         },
+        error:(error)=>{
+          // console.log("event not found error",error.error.message);
+          const errorMessage = error.error.message;
+          if(errorMessage.includes("Event not found with Organizer id")){
+            this.allEvents=[];
+          }
+          
+        }
       });
     }
 
@@ -381,6 +423,7 @@ import { BookingDetails } from '../models/booking-details';
             console.log('deletion success');
 
             console.log(res);
+            alert("Event deleted successfully.");
             console.log('fetching all events....');
 
             this.getAllEvents();
@@ -393,10 +436,13 @@ import { BookingDetails } from '../models/booking-details';
     addEvent(event) {
       console.log('Adding event :');
       this.service.addEvent(event).subscribe({
-        next: (res) => console.log(res),
+        next: (res) =>{
+          console.log(res);
+          this.getAllEvents();
+        },
         error: (error) => console.log(error),
       });
-      this.getAllEvents();
+      
     }
 
     updateEvent(event: Event) {
@@ -419,20 +465,26 @@ import { BookingDetails } from '../models/booking-details';
     }
 
     applyFilters(){
+      console.log("inside filters");
+      
       this.filteredEvents = this.allEvents.filter(event => {
+        if(this.selectedCategory){
+          console.log(this.selectedCategory+" "+event.eventCategory.toLocaleLowerCase());
+          
+        }
         const matchesCategory = this.selectedCategory
           ? event.eventCategory.toLowerCase().includes(this.selectedCategory.toLowerCase())
           : true;
     
         const matchesDate = this.selectedDate
-          ? new Date(event.eventDate).toISOString().split('T')[0] === this.selectedDate // Ensure proper date conversion
+          ? new Date(event.eventDate).toISOString().split('T')[0] === this.selectedDate 
           : true;
     
         const matchesLocation = this.selectedLocation
           ? event.eventLocation.toLowerCase().includes(this.selectedLocation.toLowerCase())
           : true;
     
-        return matchesCategory && matchesDate && matchesLocation; // Check all filters
+        return matchesCategory && matchesDate && matchesLocation;
       });
     }
 

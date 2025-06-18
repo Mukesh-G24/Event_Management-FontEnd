@@ -17,8 +17,8 @@ export class UserService {
     return this.http.get(this.getUserByIdUrl+id,{observe:'response'});
   }
 
-  updateUser(id:number,user:any):Observable<HttpResponse<any>>{
-    return this.http.put(this.updateUserUrl+id,user,{observe:'response'});
+  updateUser(id:number,user:any):Observable<string>{
+    return this.http.put(this.updateUserUrl+id,user,{responseType:'text'});
   }
 
 }
